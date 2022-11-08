@@ -1,25 +1,16 @@
 const express = require("express");
 const { reset } = require("nodemon");
 const router = express.Router();
+const gratitudeController = require("../controllers/gratitudeController")
 
-router.get('/', (req, res) => {
-  res.send(`Get all gratitudes`)
-})
+router.get('/', gratitudeController.getAllGratitudes)
 
-router.get('/:gratitudeId', (req, res) => {
-  res.send('Get an existing gratitude entry')
-})
+router.get('/:gratitudeId', gratitudeController.getOneGratitude)
 
-router.post('/', (req,res) => {
-  res.send('Create a new gratitude entry')
-})
+router.post('/', gratitudeController.createNewGratitude)
 
-router.patch('/:gratitudeId' , (req, res) => {
-  res.send('Update an existing gratitude entry')
-})
+router.patch('/:gratitudeId', gratitudeController.updateOneGratitude)
 
-router.delete('/:gratitudeId', (req, res) => {
-  res.send('Delete a gratitude entry')
-})
+router.delete('/:gratitudeId', gratitudeController.deleteOneGratitude)
 
 module.exports = router;
