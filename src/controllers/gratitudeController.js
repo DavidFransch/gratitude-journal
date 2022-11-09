@@ -1,7 +1,7 @@
 const gratitudeService = require('../services/gratitudeService');
 
-const getAllGratitudes = async (req, res) => {
-  const allGratitudes = await gratitudeService.getAllGratitudes();
+const getAllGratitudes = (req, res) => {
+  const allGratitudes = gratitudeService.getAllGratitudes();
   res.send({ status: 'OK', data: allGratitudes });
 };
 const getOneGratitude = (req, res) => {
@@ -9,8 +9,18 @@ const getOneGratitude = (req, res) => {
   res.send("Get one gratitude")
 };
 const createNewGratitude = (req, res) => {
-  const createdGratitude = gratitudeService.createNewGratitude();
-  res.send("Create new gratitude")
+  const { body } = req;
+  if(!body.name || !body.description) {
+    return;
+  }
+
+  const newGratitude = {
+    name: body.name,
+    description: body.description,
+  }
+
+  const createdGratitude = gratitudeService.createNewGratitude(newGratitude);
+  res.status(201).send({ status: "OK", data: createdGratitude })
 };
 const updateOneGratitude = (req, res) => {
   const updatedGratitude = gratitudeService.updateOneGratitude();
