@@ -1,13 +1,24 @@
 const { v4: uuid } = require('uuid')
 const Gratitude = require('../database/Gratitude')
+
 const getAllGratitudes = () => {
-  const allGratitudes = Gratitude.getAllGratitudes();
-  return allGratitudes;
+  try {
+    const allGratitudes = Gratitude.getAllGratitudes();
+    return allGratitudes;
+  } catch(error) {
+    throw error;
+  }
 };
+
 const getOneGratitude = (gratitudeId) => {
-  const gratitude = Gratitude.getOneGratitude(gratitudeId);
-  return gratitude;
+  try {
+    const gratitude = Gratitude.getOneGratitude(gratitudeId);
+    return gratitude;
+  } catch(error) {
+    throw error;
+  }
 };
+
 const createNewGratitude = (newGratitude) => {
   const gratitudeToInsert = {
     ...newGratitude,
@@ -15,15 +26,29 @@ const createNewGratitude = (newGratitude) => {
     createdAt: new Date().toLocaleString("en-US", { timeZone: 'UTC' }),
     updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
   };
-  const createdGratitude = Gratitude.createNewGratitude(gratitudeToInsert);
-  return createdGratitude;
+  try {
+    const createdGratitude = Gratitude.createNewGratitude(gratitudeToInsert);
+    return createdGratitude;
+  } catch(error) {
+    throw error;
+  }
 };
+
 const updateOneGratitude = (gratitudeId, changes) => {
-  const updatedGratitude = Gratitude.updateOneGratitude(gratitudeId, changes);
-  return updatedGratitude;
+  try {
+    const updatedGratitude = Gratitude.updateOneGratitude(gratitudeId, changes);
+    return updatedGratitude;
+  } catch(error) {
+    throw error;
+  }
 };
+
 const deleteOneGratitude = (gratitudeId) => {
-  Gratitude.deleteOneGratitude(gratitudeId);
+  try {
+    Gratitude.deleteOneGratitude(gratitudeId);
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

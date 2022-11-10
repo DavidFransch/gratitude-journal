@@ -1,25 +1,53 @@
 const gratitudeService = require('../services/gratitudeService');
 
 const getAllGratitudes = (req, res) => {
-  const allGratitudes = gratitudeService.getAllGratitudes();
-  res.send({ status: 'OK', data: allGratitudes });
+  try {
+    const allGratitudes = gratitudeService.getAllGratitudes();
+    res.send({ status: 'OK', data: allGratitudes });
+  } catch(error) {
+    res
+      .status(error?.status || 500)
+      .send({status: "FAILED", data: {error: error?.message || error}} )
+  }
 };
 
 const getOneGratitude = (req, res) => {
   const { 
     params: { gratitudeId }
    } = req;
-  
    if(!gratitudeId){
+    res
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: {error: "Parameter 'gratitudeId' can not be empty"}
+      })
     return;
    }
-  const gratitude = gratitudeService.getOneGratitude(gratitudeId);
-  res.sendStatus({status: "OK", data: gratitude})
+  try {
+    const gratitude = gratitudeService.getOneGratitude(gratitudeId);
+    res.send({status: "OK", data: gratitude})
+  } catch(error) {
+    res
+      .status(error?.status || 500)
+      .send({
+        status: "FAILED",
+        data: {error: error?.message || error}
+      })
+  }
 };
 
 const createNewGratitude = (req, res) => {
   const { body } = req;
   if(!body.name || !body.description) {
+    res 
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: {
+          error: "One of the following keys is missing or is empty in request body: 'name' or 'description"
+        }
+      })
     return;
   }
 
@@ -28,8 +56,14 @@ const createNewGratitude = (req, res) => {
     description: body.description,
   }
 
-  const createdGratitude = gratitudeService.createNewGratitude(newGratitude);
-  res.status(201).sendStatus({ status: "OK", data: createdGratitude })
+  try {
+    const createdGratitude = gratitudeService.createNewGratitude(newGratitude);
+    res.status(201).send({ status: "OK", data: createdGratitude })
+  } catch(error) {
+    res
+      .status(error?.status || 500)
+      .send({ status: "FAILED", data: { error: error?.message || error } })
+  }
 };
 
 const updateOneGratitude = (req, res) => {
@@ -37,8 +71,25 @@ const updateOneGratitude = (req, res) => {
     body,
     params: { gratitudeId }
   } = req;
-  const updatedGratitude = gratitudeService.updateOneGratitude(gratitudeId, body);
-  res.sendStatus({status: "OK", data: updatedGratitude})
+  if(!gratitudeId) {
+    res
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: {
+          error: "Parameter 'gratitudeId' can not be empty"
+        }
+      })
+    return;
+  }
+  try {
+    const updatedGratitude = gratitudeService.updateOneGratitude(gratitudeId, body);
+    res.send({status: "OK", data: updatedGratitude})
+  } catch(error) {
+    res
+      .status(error?.status || 500)
+      .send({status: "FAILED", data: { error: error?.message || error }})
+  }
 };
 
 const deleteOneGratitude = (req, res) => {
@@ -46,10 +97,25 @@ const deleteOneGratitude = (req, res) => {
     params: { gratitudeId }
   } = req;
   if(!gratitudeId){
+    res 
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: {error: "Parameter 'gratitudeId' can not be empty"}
+      });
     return;
   }
-  gratitudeService.deleteOneGratitude(gratitudeId);
-  res.send(204).sendStatus({status: "OK"})
+  try {
+    gratitudeService.deleteOneGratitude(gratitudeId);
+    res.send(204).send({status: "OK"});
+  } catch(error) {
+    res
+      .status(error?.status || 500)
+      .send({
+        status: "FAILED",
+        data: {error: error?.message || error}
+      })
+  }
 };
 
 module.exports = {

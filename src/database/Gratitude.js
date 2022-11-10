@@ -2,50 +2,95 @@ const DB = require("./db.json")
 const saveToDatabase = require("./utils")
 
 const getAllGratitudes = () => {
-  return DB.gratitudes;
+  try {
+    return DB.gratitudes;
+  } catch (error) {
+    throw { status: 500, message: error };
+  }
 };
 
 const getOneGratitude = (gratitudeId) => {
-  const gratitude = DB.gratitudes.find((gratitude) => gratitude.id === gratitudeId)
-  if(!gratitude){
-    return;
+  try {
+    const gratitude = DB.gratitudes.find((gratitude) => gratitude.id === gratitudeId)
+    if(!gratitude){
+      throw {
+        status: 500,
+        message: `Can't find gratitude with the id '${gratitudeId}'`
+      };
+    }
+    return gratitude;
+  } catch (error) {
+    throw({status: error?.status || 500, message: error?.message || error})
   }
-  return gratitude;
 }
 
 const createNewGratitude = (newGratitude) => {
   const isAlreadyAdded =
     DB.gratitudes.findIndex((gratitude) => gratitude.name === newGratitude.name) > -1;
   if (isAlreadyAdded) {
-    return;
+    throw {
+      status: 400,
+      message: `Gratitude with the name '${newGratitude}' already exists`
+    };
   }
-  DB.gratitudes.push(newGratitude);
-  saveToDatabase(DB);
-  return newGratitude;
+  try {
+    DB.gratitudes.push(newGratitude);
+    saveToDatabase(DB);
+    return newGratitude;
+  } catch(error) {
+    throw { status: 500, message: error?.message || error };
+  }
 };
 
 const updateOneGratitude = (gratitudeId, changes) => {
-  const indexForUpdate = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
-  if(indexForUpdate === -1) {
-    return;
+  try {
+    const isAlreadyAdded = DB.gratitudes.findIndex((gratitude) => gratitude.name === changes.name)
+    if(isAlreadyAdded){
+      throw {
+        status: 400,
+        message: `Gratitude with the name '${changes.name}' already exists`
+      };
+    }
+    const indexForUpdate = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
+    if(indexForUpdate === -1) {
+      throw {
+        status: 400,
+        message: `Can't find gratitude with the id '${gratitudeId}'`
+      };
+    }
+    const updatedGratitude = {
+      ...DB.gratitudes[indexForUpdate],
+      ...changes,
+      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
+    };
+    DB.gratitudes[indexForUpdate] = updatedGratitude;
+    saveToDatabase(updatedGratitude)
+    return updatedGratitude;
+  } catch (error) {
+    throw {
+      status: error?.status || 500,
+      message: error?.message || error
+    }
   }
-  const updatedGratitude = {
-    ...DB.gratitudes[indexForUpdate],
-    ...changes,
-    updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
-  };
-  DB.gratitudes[indexForUpdate] = updatedGratitude;
-  saveToDatabase(updatedGratitude)
-  return updatedGratitude;
 }
 
 const deleteOneGratitude = (gratitudeId) => {
-  const indexForDeletion = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
-  if(indexForDeletion === -1) {
-    return;
+  try {
+    const indexForDeletion = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
+    if(indexForDeletion === -1) {
+      throw {
+        status: 400,
+        message: `Can't find gratitude with the id '${gratitudeId}'`
+      }
+    }
+    DB.gratitudes.splice(indexForDeletion, 1);
+    saveToDatabase(DB);
+  } catch(error) {
+    throw {
+      status: error?.status || 500,
+      message: error?.message || error
+    }
   }
-  DB.gratitudes.splice(indexForDeletion, 1);
-  saveToDatabase(DB);
 }
 
 module.exports = { getAllGratitudes, createNewGratitude, getOneGratitude, updateOneGratitude, deleteOneGratitude };
