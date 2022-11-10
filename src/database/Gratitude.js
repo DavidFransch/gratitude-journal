@@ -5,6 +5,14 @@ const getAllGratitudes = () => {
   return DB.gratitudes;
 };
 
+const getOneGratitude = (gratitudeId) => {
+  const gratitude = DB.gratitudes.find((gratitude) => gratitude.id === gratitudeId)
+  if(!gratitude){
+    return;
+  }
+  return gratitude;
+}
+
 const createNewGratitude = (newGratitude) => {
   const isAlreadyAdded =
     DB.gratitudes.findIndex((gratitude) => gratitude.name === newGratitude.name) > -1;
@@ -16,7 +24,31 @@ const createNewGratitude = (newGratitude) => {
   return newGratitude;
 };
 
-module.exports = { getAllGratitudes, createNewGratitude };
+const updateOneGratitude = (gratitudeId, changes) => {
+  const indexForUpdate = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
+  if(indexForUpdate === -1) {
+    return;
+  }
+  const updatedGratitude = {
+    ...DB.gratitudes[indexForUpdate],
+    ...changes,
+    updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
+  };
+  DB.gratitudes[indexForUpdate] = updatedGratitude;
+  saveToDatabase(updatedGratitude)
+  return updatedGratitude;
+}
+
+const deleteOneGratitude = (gratitudeId) => {
+  const indexForDeletion = DB.gratitudes.findIndex((gratitude) => gratitude.id === gratitudeId);
+  if(indexForDeletion === -1) {
+    return;
+  }
+  DB.gratitudes.splice(indexForDeletion, 1);
+  saveToDatabase(DB);
+}
+
+module.exports = { getAllGratitudes, createNewGratitude, getOneGratitude, updateOneGratitude, deleteOneGratitude };
 
 /*
 const { Client } = require('pg')

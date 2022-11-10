@@ -4,8 +4,9 @@ const getAllGratitudes = () => {
   const allGratitudes = Gratitude.getAllGratitudes();
   return allGratitudes;
 };
-const getOneGratitude = () => {
-  return;
+const getOneGratitude = (gratitudeId) => {
+  const gratitude = Gratitude.getOneGratitude(gratitudeId);
+  return gratitude;
 };
 const createNewGratitude = (newGratitude) => {
   const gratitudeToInsert = {
@@ -17,11 +18,12 @@ const createNewGratitude = (newGratitude) => {
   const createdGratitude = Gratitude.createNewGratitude(gratitudeToInsert);
   return createdGratitude;
 };
-const updateOneGratitude = () => {
-  return;
+const updateOneGratitude = (gratitudeId, changes) => {
+  const updatedGratitude = Gratitude.updateOneGratitude(gratitudeId, changes);
+  return updatedGratitude;
 };
-const deleteOneGratitude = () => {
-  return;
+const deleteOneGratitude = (gratitudeId) => {
+  Gratitude.deleteOneGratitude(gratitudeId);
 };
 
 module.exports = {

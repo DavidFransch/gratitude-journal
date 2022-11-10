@@ -4,10 +4,19 @@ const getAllGratitudes = (req, res) => {
   const allGratitudes = gratitudeService.getAllGratitudes();
   res.send({ status: 'OK', data: allGratitudes });
 };
+
 const getOneGratitude = (req, res) => {
-  const gratitude = gratitudeService.getOneGratitude();
-  res.send("Get one gratitude")
+  const { 
+    params: { gratitudeId }
+   } = req;
+  
+   if(!gratitudeId){
+    return;
+   }
+  const gratitude = gratitudeService.getOneGratitude(gratitudeId);
+  res.sendStatus({status: "OK", data: gratitude})
 };
+
 const createNewGratitude = (req, res) => {
   const { body } = req;
   if(!body.name || !body.description) {
@@ -20,15 +29,27 @@ const createNewGratitude = (req, res) => {
   }
 
   const createdGratitude = gratitudeService.createNewGratitude(newGratitude);
-  res.status(201).send({ status: "OK", data: createdGratitude })
+  res.status(201).sendStatus({ status: "OK", data: createdGratitude })
 };
+
 const updateOneGratitude = (req, res) => {
-  const updatedGratitude = gratitudeService.updateOneGratitude();
-  res.send("Update an existing gratitude")
+  const {
+    body,
+    params: { gratitudeId }
+  } = req;
+  const updatedGratitude = gratitudeService.updateOneGratitude(gratitudeId, body);
+  res.sendStatus({status: "OK", data: updatedGratitude})
 };
+
 const deleteOneGratitude = (req, res) => {
-  gratitudeService.deleteOneGratitude();
-  res.send("Delete an existing gratitude")
+  const {
+    params: { gratitudeId }
+  } = req;
+  if(!gratitudeId){
+    return;
+  }
+  gratitudeService.deleteOneGratitude(gratitudeId);
+  res.send(204).sendStatus({status: "OK"})
 };
 
 module.exports = {
