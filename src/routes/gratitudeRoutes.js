@@ -1,9 +1,13 @@
 const express = require("express");
-const router = express.Router();
+const apicache = require("apicache");
+
 const gratitudeController = require("../controllers/gratitudeController");
 const recordController = require("../controllers/recordController");
 
-router.get('/', gratitudeController.getAllGratitudes);
+const router = express.Router();
+const cache = apicache.middleware;
+
+router.get('/', cache("2 minutes"), gratitudeController.getAllGratitudes);
 
 router.get('/:gratitudeId', gratitudeController.getOneGratitude);
 
