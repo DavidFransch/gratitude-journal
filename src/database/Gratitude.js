@@ -1,9 +1,13 @@
 const DB = require("./db.json")
 const saveToDatabase = require("./utils")
 
-const getAllGratitudes = () => {
+const getAllGratitudes = (filterParams) => {
   try {
-    return DB.gratitudes;
+    let gratitudes = DB.gratitudes;
+    if(filterParams.mode) {
+      return DB.gratitudes.filter((gratitude) => gratitude.mode.toLowerCase().includes(filterParams.mode));
+    }
+    return gratitudes;
   } catch (error) {
     throw { status: 500, message: error };
   }

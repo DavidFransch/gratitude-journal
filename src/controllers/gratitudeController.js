@@ -2,7 +2,8 @@ const gratitudeService = require('../services/gratitudeService');
 
 const getAllGratitudes = (req, res) => {
   try {
-    const allGratitudes = gratitudeService.getAllGratitudes();
+    const { mode } = req.query;
+    const allGratitudes = gratitudeService.getAllGratitudes({ mode });
     res.send({ status: 'OK', data: allGratitudes });
   } catch(error) {
     res

@@ -1,9 +1,9 @@
 const { v4: uuid } = require('uuid')
 const Gratitude = require('../database/Gratitude')
 
-const getAllGratitudes = () => {
+const getAllGratitudes = (filterParams) => {
   try {
-    const allGratitudes = Gratitude.getAllGratitudes();
+    const allGratitudes = Gratitude.getAllGratitudes(filterParams);
     return allGratitudes;
   } catch(error) {
     throw error;

@@ -4,6 +4,7 @@
       "id": "61dbae02-c147-4e28-863c-db7bd402b2d6",
       "name": "James Brown",
       "description": "Some description...",
+      "mode": "For Time",
       "createdAt": "4/20/2022, 2:21:56 PM",
       "updatedAt": "4/20/2022, 2:21:56 PM"
     },
@@ -11,6 +12,7 @@
       "id": "4a3d9aaa-608c-49a7-a004-66305ad4ab50",
       "name": "Michael Jackson",
       "description": "Some description...",
+      "mode": "AMRAP 10",
       "createdAt": "4/20/2022, 2:21:56 PM",
       "updatedAt": "4/20/2022, 2:21:56 PM"
     },
@@ -18,6 +20,31 @@
       "id": "d8be2362-7b68-4ea4-a1f6-03f8bc4eede7",
       "name": "Stevie Wonder",
       "description": "Some description...",
+      "mode": "AMRAP 10",
+      "createdAt": "4/20/2022, 2:21:56 PM",
+      "updatedAt": "4/20/2022, 2:21:56 PM"
+    },
+    {
+      "id": "8f8318f8-b869-4e9d-bb78-88010193563a",
+      "name": "Chris Tucker",
+      "description": "Some description...",
+      "mode": "AMRAP 12",
+      "createdAt": "4/20/2022, 2:21:56 PM",
+      "updatedAt": "4/20/2022, 2:21:56 PM"
+    },
+    {
+      "id": "0a5948af-5185-4266-8c4b-818889657e9d",
+      "name": "Paul Moodley",
+      "description": "Some description...",
+      "mode": "3 Rounds For Time",
+      "createdAt": "4/20/2022, 2:21:56 PM",
+      "updatedAt": "4/20/2022, 2:21:56 PM"
+    },
+    {
+      "id": "3dc53bc8-27b8-4773-b85d-89f0a354d437",
+      "name": "Christian Bale",
+      "description": "Some description...",
+      "mode": "AMRAP 15",
       "createdAt": "4/20/2022, 2:21:56 PM",
       "updatedAt": "4/20/2022, 2:21:56 PM"
     }
