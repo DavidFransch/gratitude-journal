@@ -137,6 +137,65 @@ const router = express.Router();
  *                  example: "Can't find record with the id '{gratitudeId}'"
  */
 
+// TODO: test again once db is added
+
+/**
+ * @openapi
+ * /api/gratitudes:
+ *  post:
+ *    tags:
+ *    - Gratitudes
+ *    requestBody:
+ *      description: Optional description in *Markdown*
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/GratitudePostBody'
+ *    responses:
+ *      201:
+ *        description: OK
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object 
+ *              properties:
+ *                status:
+ *                  type: string
+ *                  example: OK
+ *                data:
+ *                  type: array
+ *                items:
+ *                  type: object
+ *                  $ref: "#/components/schemas/GratitudePostResponse"
+ *      5XX:
+ *        description: FAILED
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                status:
+ *                  type: string
+ *                  example: FAILED
+ *                data:
+ *                  type: string
+ *                  example: "Something went wrong."
+ *      4XX:
+ *        description: FAILED
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                status:
+ *                  type: string
+ *                  example: FAILED
+ *                data:
+ *                  type: string
+ *                  example: "Gratitude with the name already exists"
+ */
+
 router.get('/', gratitudeController.getAllGratitudes);
 
 router.get('/:gratitudeId', gratitudeController.getOneGratitude);

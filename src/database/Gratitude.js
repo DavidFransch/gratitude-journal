@@ -59,7 +59,34 @@ const saveToDatabase = require("./utils")
  *           example: d8be2362-7b68-4ea4-a1f6-03f8bc4eede7 
  *         record:
  *           type: string
- *           example: "100"  
+ *           example: 100
+ */
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     GratitudePostBody:
+ *       type: object
+ *       properties:
+ *        name:
+ *          type: string
+ *          example: Some name
+ *        description:
+ *          type: string
+ *          example: I'm grateful for xyz
+ *     GratitudePostResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          example: 06884659-e650-4a38-9f12-ccd59a4071ec
+ *        name:
+ *          type: string
+ *          example: New name
+ *        description: 
+ *          type: string
+ *          example: I'm grateful xyz
  */
 
 const getAllGratitudes = (filterParams) => {
