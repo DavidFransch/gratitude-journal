@@ -2,6 +2,7 @@ const express = require("express");
 const gratitudeRouter = require("./routes/gratitudeRoutes");
 const bodyParser = require("body-parser");
 const apicache = require("apicache");
+const { swaggerDocs: SwaggerDocs } = require("./swagger");
 
 const cache = apicache.middleware;
 
@@ -14,4 +15,5 @@ app.use("/api/gratitudes", gratitudeRouter);
 
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);
+  SwaggerDocs(app, PORT);
 });

@@ -1,6 +1,67 @@
 const DB = require("./db.json")
 const saveToDatabase = require("./utils")
 
+// TODO: move to schema or model file
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Gratitude:
+ *       type: object
+ *       properties:
+ *         id: 
+ *           type: string
+ *           example: 61dbae02-c147-4e28-863c-db7bd402b2d6
+ *         name: 
+ *           type: string
+ *           example: Tommy 
+ *         description:
+ *           type: string
+ *           example: I am grateful for xyz  
+ *         mode:
+ *           type: string
+ *           example: Premium
+ *         createdAt:
+ *           type: string
+ *           example: 4/20/2022, 2:21:56 PM
+ *         updatedAt: 
+ *           type: string
+ *           example: 4/20/2022, 2:21:56 PM
+ *     SingleGratitude:
+ *       type: object
+ *       properties:
+ *         id: 
+ *           type: string
+ *           example: 4a3d9aaa-608c-49a7-a004-66305ad4ab50
+ *         name: 
+ *           type: string
+ *           example: Johnny 
+ *         description:
+ *           type: string
+ *           example: I am grateful for xyz  
+ *         mode:
+ *           type: string
+ *           example: Premium
+ *         createdAt:
+ *           type: string
+ *           example: 4/20/2022, 2:21:56 PM
+ *         updatedAt: 
+ *           type: string
+ *           example: 4/20/2022, 2:21:56 PM
+ *     SingleRecord:
+ *       type: object
+ *       properties:
+ *         id: 
+ *           type: string
+ *           example: 0bff586f-2017-4526-9e52-fe3ea46d55ab
+ *         gratitude: 
+ *           type: string
+ *           example: d8be2362-7b68-4ea4-a1f6-03f8bc4eede7 
+ *         record:
+ *           type: string
+ *           example: "100"  
+ */
+
 const getAllGratitudes = (filterParams) => {
   try {
     let gratitudes = DB.gratitudes;
