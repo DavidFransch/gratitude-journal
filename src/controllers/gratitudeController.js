@@ -1,9 +1,9 @@
 const gratitudeService = require('../services/gratitudeService');
 
-const getAllGratitudes = (req, res) => {
+const getAllGratitudes = async (req, res) => {
   try {
     const { mode } = req.query;
-    const allGratitudes = gratitudeService.getAllGratitudes({ mode });
+    const allGratitudes = await gratitudeService.getAllGratitudes({ mode });
     res.send({ status: 'OK', data: allGratitudes });
   } catch(error) {
     res
@@ -12,7 +12,7 @@ const getAllGratitudes = (req, res) => {
   }
 };
 
-const getOneGratitude = (req, res) => {
+const getOneGratitude = async (req, res) => {
   const { 
     params: { gratitudeId }
    } = req;
@@ -26,7 +26,7 @@ const getOneGratitude = (req, res) => {
     return;
    }
   try {
-    const gratitude = gratitudeService.getOneGratitude(gratitudeId);
+    const gratitude = await gratitudeService.getOneGratitude(gratitudeId);
     res.send({status: "OK", data: gratitude})
   } catch(error) {
     res
@@ -38,7 +38,7 @@ const getOneGratitude = (req, res) => {
   }
 };
 
-const createNewGratitude = (req, res) => {
+const createNewGratitude = async (req, res) => {
   const { body } = req;
   if(!body.name || !body.description) {
     res 
@@ -58,7 +58,7 @@ const createNewGratitude = (req, res) => {
   }
 
   try {
-    const createdGratitude = gratitudeService.createNewGratitude(newGratitude);
+    const createdGratitude = await gratitudeService.createNewGratitude(newGratitude);
     res.status(201).send({ status: "OK", data: createdGratitude })
   } catch(error) {
     res
@@ -67,7 +67,7 @@ const createNewGratitude = (req, res) => {
   }
 };
 
-const updateOneGratitude = (req, res) => {
+const updateGratitude = async (req, res) => {
   const {
     body,
     params: { gratitudeId }
@@ -84,7 +84,7 @@ const updateOneGratitude = (req, res) => {
     return;
   }
   try {
-    const updatedGratitude = gratitudeService.updateOneGratitude(gratitudeId, body);
+    const updatedGratitude = await gratitudeService.updateGratitude(gratitudeId, body);
     res.send({status: "OK", data: updatedGratitude})
   } catch(error) {
     res
@@ -93,7 +93,7 @@ const updateOneGratitude = (req, res) => {
   }
 };
 
-const deleteOneGratitude = (req, res) => {
+const deleteGratitude = async (req, res) => {
   const {
     params: { gratitudeId }
   } = req;
@@ -107,8 +107,8 @@ const deleteOneGratitude = (req, res) => {
     return;
   }
   try {
-    gratitudeService.deleteOneGratitude(gratitudeId);
-    res.send(204).send({status: "OK"});
+    await gratitudeService.deleteGratitude(gratitudeId);
+    res.send({status: "OK"});
   } catch(error) {
     res
       .status(error?.status || 500)
@@ -123,6 +123,6 @@ module.exports = {
   getAllGratitudes,
   getOneGratitude,
   createNewGratitude,
-  updateOneGratitude,
-  deleteOneGratitude
+  updateGratitude,
+  deleteGratitude
 }

@@ -204,8 +204,8 @@ router.get('/:gratitudeId/records', recordController.getRecordForGratitude);
 
 router.post('/', gratitudeController.createNewGratitude);
 
-router.patch('/:gratitudeId', gratitudeController.updateOneGratitude);
+router.patch('/:gratitudeId', gratitudeController.updateGratitude);
 
-router.delete('/:gratitudeId', gratitudeController.deleteOneGratitude);
+router.delete('/:gratitudeId', gratitudeController.deleteGratitude);
 
 module.exports = router;

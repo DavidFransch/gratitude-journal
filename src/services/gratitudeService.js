@@ -1,25 +1,42 @@
 const { v4: uuid } = require('uuid')
-const Gratitude = require('../database/Gratitude')
+const GratitudeDatabase = require('../database/GratitudeDatabase')
 
-const getAllGratitudes = (filterParams) => {
+const getAllGratitudes = async (filterParams) => {
   try {
-    const allGratitudes = Gratitude.getAllGratitudes(filterParams);
-    return allGratitudes;
+    const { rows } = await GratitudeDatabase.getAllGratitudes();
+    if(filterParams.mode) {
+      return rows.filter((gratitude) => gratitude.mode.toLowerCase().includes(filterParams.mode));
+    }
+    return rows; 
   } catch(error) {
-    throw error;
+    throw { 
+      status: error?.status || 500, 
+      message: error?.message || error
+    };
   }
 };
 
-const getOneGratitude = (gratitudeId) => {
+const getOneGratitude = async (gratitudeId) => {
   try {
-    const gratitude = Gratitude.getOneGratitude(gratitudeId);
-    return gratitude;
+    const { rows } = await GratitudeDatabase.getOneGratitude(gratitudeId);
+    return rows;
   } catch(error) {
-    throw error;
+    throw { 
+      status: error?.status || 500, 
+      message: error?.message || error
+    };
   }
 };
 
-const createNewGratitude = (newGratitude) => {
+const createNewGratitude = async (newGratitude) => {
+  const { rows } = await GratitudeDatabase.getAllGratitudes();
+  const isAlreadyAdded = rows.findIndex((gratitude) => gratitude.name === newGratitude.name) > -1;
+  if(isAlreadyAdded){
+    throw {
+      status: 400,
+      message: `Gratitude with the name '${newGratitude.name}' already exists`
+    }
+  }
   const gratitudeToInsert = {
     ...newGratitude,
     id: uuid(),
@@ -27,27 +44,63 @@ const createNewGratitude = (newGratitude) => {
     updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
   };
   try {
-    const createdGratitude = Gratitude.createNewGratitude(gratitudeToInsert);
-    return createdGratitude;
+    const { rows } = await GratitudeDatabase.createNewGratitude(gratitudeToInsert);
+    return rows;
   } catch(error) {
-    throw error;
+    throw { 
+      status: error?.status || 500, 
+      message: error?.message || error
+    };
   }
 };
 
-const updateOneGratitude = (gratitudeId, changes) => {
+const updateGratitude = async (gratitudeId, changes) => {
   try {
-    const updatedGratitude = Gratitude.updateOneGratitude(gratitudeId, changes);
-    return updatedGratitude;
+    const { rows } = await GratitudeDatabase.getAllGratitudes();
+    const isAlreadyAdded = rows.findIndex((gratitude) => gratitude.name === changes.name) > -1;
+    if(isAlreadyAdded){
+      throw {
+        status: 400,
+        message: `Gratitude with the name '${changes.name}' already exists`
+      };
+    }
+    const indexForUpdate = rows.findIndex((gratitude) => gratitude.id === gratitudeId);
+    if(indexForUpdate === -1) {
+      throw {
+        status: 400,
+        message: `Can't find gratitude with the id '${gratitudeId}'`
+      };
+    }
+    const updatedChanges = {
+      ...changes,
+      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
+    }
+    const { rows: updatedRows } = await GratitudeDatabase.updateGratitude(gratitudeId, updatedChanges);
+    return updatedRows;
   } catch(error) {
-    throw error;
+    throw { 
+      status: error?.status || 500, 
+      message: error?.message || error
+    };
   }
 };
 
-const deleteOneGratitude = (gratitudeId) => {
+const deleteGratitude = async (gratitudeId) => {
   try {
-    Gratitude.deleteOneGratitude(gratitudeId);
+    const { rows } = await GratitudeDatabase.getAllGratitudes();
+    const indexForDeletion = rows.findIndex((gratitude) => gratitude.id === gratitudeId);
+    if(indexForDeletion === -1){
+      throw {
+        status: 400,
+        message: `Can't find gratitude with id '${gratitudeId}'`
+      }
+    }
+    await GratitudeDatabase.deleteGratitude(gratitudeId);
   } catch (error) {
-    throw error;
+    throw {
+      status: error?.status || 500,
+      message: error?.message || error 
+    };
   }
 };
 
@@ -55,6 +108,6 @@ module.exports = {
   getAllGratitudes,
   getOneGratitude,
   createNewGratitude,
-  updateOneGratitude,
-  deleteOneGratitude
+  updateGratitude,
+  deleteGratitude
 }
