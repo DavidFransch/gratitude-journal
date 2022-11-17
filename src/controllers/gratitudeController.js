@@ -59,7 +59,7 @@ const createNewGratitude = async (req, res) => {
 
   try {
     const createdGratitude = await gratitudeService.createNewGratitude(newGratitude);
-    res.status(201).send({ status: "OK", data: createdGratitude })
+    res.status(201).send({ status: "OK", data: createdGratitude });
   } catch(error) {
     res
       .status(error?.status || 500)
@@ -84,7 +84,7 @@ const updateGratitude = async (req, res) => {
     return;
   }
   try {
-    const updatedGratitude = await gratitudeService.updateGratitude(gratitudeId, body);
+    await gratitudeService.updateGratitude(gratitudeId, body);
     res.send({status: "OK", data: updatedGratitude})
   } catch(error) {
     res

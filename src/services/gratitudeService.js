@@ -44,8 +44,8 @@ const createNewGratitude = async (newGratitude) => {
     updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
   };
   try {
-    const { rows } = await GratitudeDatabase.createNewGratitude(gratitudeToInsert);
-    return rows;
+    await GratitudeDatabase.createNewGratitude(gratitudeToInsert);
+    return gratitudeToInsert;
   } catch(error) {
     throw { 
       status: error?.status || 500, 
@@ -75,8 +75,7 @@ const updateGratitude = async (gratitudeId, changes) => {
       ...changes,
       updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" })
     }
-    const { rows: updatedRows } = await GratitudeDatabase.updateGratitude(gratitudeId, updatedChanges);
-    return updatedRows;
+    await GratitudeDatabase.updateGratitude(gratitudeId, updatedChanges);
   } catch(error) {
     throw { 
       status: error?.status || 500, 

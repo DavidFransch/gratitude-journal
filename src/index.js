@@ -17,3 +17,5 @@ app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}`);
   SwaggerDocs(app, PORT);
 });
+
+module.exports = app;

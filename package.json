@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "database": "node src/database/Gratitude.js"
+    "database": "node src/database/Gratitude.js",
+    "test": "mocha src/tests/**/*Tests.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "mocha": "^10.1.0",
+    "nodemon": "^2.0.20",
+    "should": "^13.2.3",
+    "sinon": "^14.0.2",
+    "supertest": "^6.3.1"
   },
   "dependencies": {
     "apicache": "^1.6.3",
